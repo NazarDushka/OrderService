@@ -10,8 +10,8 @@ namespace OrderService.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly string _userServiceUrl = "https://localhost:7005/api/user";
-        private readonly string _productServiceUrl = "https://localhost:7214/api/product";
+        private readonly string _userServiceUrl = "https://localhost:7083/api/User";
+        private readonly string _productServiceUrl = "https://localhost:7123/api/Product";
 
         private readonly List<Order> Orders= new List<Order>();
         public OrderController(IHttpClientFactory httpClientFactory)
