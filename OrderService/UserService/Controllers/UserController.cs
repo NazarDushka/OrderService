@@ -28,5 +28,29 @@ namespace UserService.Controllers
         {
             return Ok(Users);
         }
+
+        // Додати нового користувача
+        [HttpPost]
+        public ActionResult<User> AddUser([FromBody] User newUser)
+        {
+            newUser.Id = Users.Max(u => u.Id) + 1; // Генерація нового ID
+            Users.Add(newUser);
+            return CreatedAtAction(nameof(GetUser), new { id = newUser.Id }, newUser);
+        }
+
+        // Оновити існуючого користувача
+        [HttpPut("{id}")]
+        public ActionResult UpdateUser(int id, [FromBody] User updatedUser)
+        {
+            var existingUser = Users.FirstOrDefault(u => u.Id == id);
+            if (existingUser == null)
+                return NotFound();
+
+            // Оновлення полів
+            existingUser.Name = updatedUser.Name;
+            existingUser.Email = updatedUser.Email;
+
+            return Ok(existingUser);
+        }
     }
 }

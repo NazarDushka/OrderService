@@ -28,6 +28,30 @@ namespace ProductService.Controllers
         {
             return Ok(Products);
         }
+
+        // Додати новий продукт
+        [HttpPost]
+        public ActionResult<Product> AddProduct([FromBody] Product newProduct)
+        {
+            newProduct.Id = Products.Max(p => p.Id) + 1; // Генерація нового ID
+            Products.Add(newProduct);
+            return CreatedAtAction(nameof(GetProduct), new { id = newProduct.Id }, newProduct);
+        }
+
+        // Оновити існуючий продукт
+        [HttpPut("{id}")]
+        public ActionResult UpdateProduct(int id, [FromBody] Product updatedProduct)
+        {
+            var existingProduct = Products.FirstOrDefault(p => p.Id == id);
+            if (existingProduct == null)
+                return NotFound();
+
+            // Оновлення полів продукту
+            existingProduct.Name = updatedProduct.Name;
+            existingProduct.Price = updatedProduct.Price;
+
+            return Ok(existingProduct);
+        }
     }
 }
 
